@@ -189,23 +189,29 @@ kbd {
 @media (max-width: 820px) { .dl-grid { grid-template-columns: 1fr; } }
 
 /* Pricing */
-.plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 36px; }
+.plans { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 36px; }
 .plan {
-  font: inherit; color: inherit; text-align: left; cursor: pointer;
+  position: relative; font: inherit; color: inherit; text-align: left; cursor: pointer;
   background: var(--surface); border: 2px solid var(--line); border-radius: var(--radius-lg);
-  padding: 24px; display: flex; flex-direction: column; gap: 10px;
+  padding: 24px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
 }
 .plan:hover { border-color: var(--steel); }
 .plan[aria-pressed="true"] { border-color: var(--cobalt); box-shadow: 0 0 0 3px color-mix(in srgb, var(--cobalt) 25%, transparent); }
-.plan-name { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; }
-.plan-price { font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; }
-.plan-price:empty { display: none; }
+.plan-name { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.02em; }
+.plan-price { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+.plan-price [data-price] { font-size: 2.1rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+.plan-price .per { color: var(--steel); font-weight: 500; }
+.plan-save { font-size: .85rem; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: color-mix(in srgb, var(--cobalt) 14%, transparent); color: var(--cobalt); }
 .plan-desc { color: var(--steel); flex: 1; }
 .plan-pick { font-weight: 700; color: var(--cobalt); }
-.plan-life { background: var(--wire-bg); color: #FFFFFF; border-color: var(--line); }
-.plan-life .plan-desc { color: #C7D0E8; }
-.plan-life .plan-pick { color: var(--marker); }
-@media (max-width: 820px) { .plans { grid-template-columns: 1fr; } }
+.plan-best { background: var(--wire-bg); color: #FFFFFF; border-color: var(--line); }
+.plan-best .plan-desc, .plan-best .plan-price .per { color: #C7D0E8; }
+.plan-best .plan-pick { color: var(--marker); }
+.plan-best .plan-save { background: rgba(255, 216, 77, .16); color: var(--marker); }
+.plan-badge { position: absolute; top: -13px; right: 18px; background: var(--marker); color: var(--marker-ink); font-size: .82rem; font-weight: 800; padding: 4px 11px; border-radius: 999px; }
+.plans-note { margin-top: 14px; color: var(--steel); font-size: .9rem; }
+@media (max-width: 1040px) { .plans { grid-template-columns: repeat(2, 1fr); row-gap: 24px; } }
+@media (max-width: 640px) { .plans { grid-template-columns: 1fr; } }
 
 .license {
   margin-top: 28px; padding: clamp(22px, 4vw, 36px); border-radius: var(--radius-lg);

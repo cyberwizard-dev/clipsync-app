@@ -13,7 +13,7 @@ Copy on your Mac and paste on your Android phone, and back. Text and images, end
 
 ## Licensing
 
-Every new pairing gets a 3-day free trial. After that, choose a Week, Month or Lifetime license on the [website](https://cyberwizard-dev.github.io/clipsync-app/#pricing). One license covers all the devices paired together.
+Every new pairing gets a 3-day free trial. After that, choose a Monthly ($2.99), 6-month ($14.99), Annual ($24.99) or Lifetime ($49.99) license on the [website](https://cyberwizard-dev.github.io/clipsync-app/#pricing). One license covers all the devices paired together.
 
 ---
 

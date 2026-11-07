@@ -201,25 +201,35 @@
     <h2 id="pricing-title">Try it for 3 days, then pick a license</h2>
     <p class="section-lede">Every new pairing works free for 3 days. One license covers your whole pairing: every computer and phone paired together.</p>
     <div class="plans">
-      <button type="button" class="plan" data-plan="week">
-        <span class="plan-name">Week</span>
-        <span class="plan-price" data-price="week"></span>
-        <span class="plan-desc">7 days from the moment you activate it.</span>
-        <span class="plan-pick">Choose Week</span>
-      </button>
       <button type="button" class="plan" data-plan="month">
-        <span class="plan-name">Month</span>
-        <span class="plan-price" data-price="month"></span>
-        <span class="plan-desc">30 days from activation.</span>
-        <span class="plan-pick">Choose Month</span>
+        <span class="plan-name">Monthly</span>
+        <span class="plan-price"><span data-price="month"></span><span class="per">/month</span></span>
+        <span class="plan-desc">30 days from the moment you activate it.</span>
+        <span class="plan-pick">Choose Monthly</span>
       </button>
-      <button type="button" class="plan plan-life" data-plan="lifetime">
+      <button type="button" class="plan" data-plan="halfyear">
+        <span class="plan-name">6 months</span>
+        <span class="plan-price"><span data-price="halfyear"></span><span class="per">/6 months</span></span>
+        <span class="plan-save">Save 16%</span>
+        <span class="plan-desc">Half a year from activation.</span>
+        <span class="plan-pick">Choose 6 months</span>
+      </button>
+      <button type="button" class="plan plan-best" data-plan="year">
+        <span class="plan-badge">Best value</span>
+        <span class="plan-name">Annual</span>
+        <span class="plan-price"><span data-price="year"></span><span class="per">/year</span></span>
+        <span class="plan-save">Save 30%</span>
+        <span class="plan-desc">A full year from activation.</span>
+        <span class="plan-pick">Choose Annual</span>
+      </button>
+      <button type="button" class="plan" data-plan="lifetime">
         <span class="plan-name">Lifetime</span>
-        <span class="plan-price" data-price="lifetime"></span>
+        <span class="plan-price"><span data-price="lifetime"></span><span class="per">one-time</span></span>
         <span class="plan-desc">Pay once. Includes future updates.</span>
         <span class="plan-pick">Choose Lifetime</span>
       </button>
     </div>
+    <p class="plans-note">Prices in US dollars. Savings are compared with paying monthly.</p>
 
     <form id="license-form" class="license" novalidate>
       <h3 id="form-title">Get a license</h3>
@@ -231,9 +241,10 @@
       <div class="field">
         <label for="f-plan">Plan</label>
         <select id="f-plan" name="plan">
-          <option value="week">Week</option>
-          <option value="month" selected>Month</option>
-          <option value="lifetime">Lifetime</option>
+          <option value="month">Monthly ($2.99/month)</option>
+          <option value="halfyear">6 months ($14.99)</option>
+          <option value="year" selected>Annual ($24.99/year)</option>
+          <option value="lifetime">Lifetime ($49.99 one-time)</option>
         </select>
       </div>
       <div class="field field-wide">

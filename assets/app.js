@@ -1,13 +1,16 @@
 // ClipSync landing page.
-// Set prices here (e.g. "$2"). An empty string hides that plan's price.
-const PRICES = { week: "", month: "", lifetime: "" };
+// Prices in US dollars, keyed by backend plan id. An empty string hides that plan's price.
+// (The form's <select> labels in index.html repeat these prices: update both.)
+const PRICES = { month: "$2.99", halfyear: "$14.99", year: "$24.99", lifetime: "$49.99" };
 
 const SUPABASE_URL = "https://msixdmlumwtcvhxnqccn.supabase.co";
 const SUPABASE_KEY = "sb_publishable__7TSPCjzdY-wbggHxMsM8Q_UgI17Vqr"; // publishable: public by design
 
 // ---- Prices -----------------------------------------------------------------
 document.querySelectorAll("[data-price]").forEach((el) => {
-  el.textContent = PRICES[el.dataset.price] || "";
+  const price = PRICES[el.dataset.price] || "";
+  el.textContent = price;
+  if (!price) el.closest(".plan-price").hidden = true;
 });
 
 // ---- Live demo: real AES-256-GCM in the browser, same AAD as the apps ----------
@@ -93,7 +96,7 @@ document.querySelectorAll("[data-price]").forEach((el) => {
 
   const MESSAGES = {
     invalid_email: "That email address doesn't look right. Check it and try again.",
-    invalid_plan: "Choose Week, Month or Lifetime, then try again.",
+    invalid_plan: "Choose Monthly, 6 months, Annual or Lifetime, then try again.",
     too_many_requests: "We've already received several requests from this email. We'll be in touch soon.",
   };
 
