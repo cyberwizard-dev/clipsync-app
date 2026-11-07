@@ -262,3 +262,14 @@ kbd {
 .table-note { margin-top: 14px; color: var(--steel); font-size: .9rem; max-width: 70ch; }
 @media (max-width: 640px) { .compare tbody th { width: 9.5rem; min-width: 9.5rem; } }
 .compare thead th:first-child { position: sticky; left: 0; background: var(--surface); }
+
+/* Naira price under each plan, payment fallback link, and the license key shown after paying. */
+.plan-ngn { font-size: .85rem; opacity: .75; min-height: 1.2em; }
+.btn-link { background: none; border: 0; padding: .5rem 0; color: inherit; text-decoration: underline; cursor: pointer; font: inherit; opacity: .8; }
+.btn-link:hover { opacity: 1; }
+.btn-link:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+.keybox { grid-column: 1 / -1; margin-top: 1rem; padding: 1rem; border: 2px solid currentColor; border-radius: 12px; }
+.keybox-title { font-weight: 700; margin: 0 0 .5rem; }
+.keybox-row { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+.keybox-row code { font-size: 1.05rem; letter-spacing: .04em; word-break: break-all; padding: .4rem .6rem; border-radius: 8px; background: color-mix(in srgb, currentColor 8%, transparent); }
+.keybox-help { margin: .6rem 0 0; font-size: .9rem; opacity: .8; }

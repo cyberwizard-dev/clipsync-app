@@ -1,6 +1,7 @@
 // ClipSync landing page.
 // Lifetime licenses in US dollars, keyed by backend plan id (number of devices). An empty string hides a price.
-// (The form's <select> labels in index.html repeat these prices: update both.)
+// (The form's <select> labels in index.html repeat these prices: update both. The server's paystack function holds
+// the real prices; buyers are charged in naira at today's rate.)
 const PRICES = { dev2: "$9.99", dev5: "$19.99", dev10: "$29.99" };
 
 const SUPABASE_URL = "https://msixdmlumwtcvhxnqccn.supabase.co";
@@ -100,46 +101,116 @@ document.querySelectorAll("[data-price]").forEach((el) => {
     too_many_requests: "We've already received several requests from this email. We'll be in touch soon.",
   };
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  const FN = SUPABASE_URL + "/functions/v1/paystack";
+  const request = document.getElementById("f-request");
+  const keybox = document.getElementById("f-key");
+  const keyValue = document.getElementById("f-key-value");
+  let ngn = {};
+  const naira = (n) => "₦" + Math.round(n).toLocaleString("en-NG");
+  const payLabel = () => (ngn[plan.value] ? "Pay " + naira(ngn[plan.value]) + " with Paystack" : "Pay with Paystack");
+
+  // Today's naira prices from the server (the amount actually charged is decided there too).
+  fetch(FN + "/quote").then((r) => r.json()).then((q) => {
+    for (const [p, v] of Object.entries(q.prices || {})) {
+      ngn[p] = v.ngn;
+      document.querySelectorAll(`[data-ngn="${p}"]`).forEach((el) => (el.textContent = "≈ " + naira(v.ngn) + " today"));
+    }
+    submit.textContent = payLabel();
+  }).catch(() => {});
+  plan.addEventListener("change", () => { if (!submit.disabled) submit.textContent = payLabel(); });
+
+  const MSG_PAY = {
+    invalid_email: MESSAGES.invalid_email, invalid_plan: MESSAGES.invalid_plan,
+    rate_unavailable: "We couldn't get today's exchange rate. Try again in a minute, or request by email instead.",
+    not_configured: "Payments aren't switched on yet. Request by email instead and we'll send your key.",
+  };
+
+  function validEmail() {
     const addr = email.value.trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(addr)) {
       email.setAttribute("aria-invalid", "true");
       email.focus();
-      return show(MESSAGES.invalid_email, "err");
+      show(MESSAGES.invalid_email, "err");
+      return null;
     }
     email.removeAttribute("aria-invalid");
-    if (honey.value) return show("Request received. You'll get your license key by email.", "ok"); // bot
+    return addr;
+  }
 
-    submit.disabled = true;
-    submit.textContent = "Sending…";
-    show("", "");
+  async function call(url, opts = {}) {
     const ctrl = new AbortController();
-    const t = setTimeout(() => ctrl.abort(), 15000);
+    const t = setTimeout(() => ctrl.abort(), 20000);
+    try {
+      const r = await fetch(url, { ...opts, signal: ctrl.signal });
+      return { ok: r.ok, status: r.status, body: await r.json().catch(() => ({})) };
+    } finally { clearTimeout(t); }
+  }
+  const offline = (err) => err.name === "AbortError"
+    ? "The request timed out. Check your connection and try again."
+    : "You appear to be offline. Check your connection and try again.";
+
+  // Pay: the server makes the transaction at today's naira price; Paystack's secure page takes the payment and sends
+  // the buyer back here with ?reference=…, where we confirm it and show the key.
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const addr = validEmail();
+    if (!addr || honey.value) return;
+    submit.disabled = true; submit.textContent = "Opening Paystack…"; show("", "");
+    try {
+      const r = await call(FN + "/init", { method: "POST", headers: { "Content-Type": "application/json" },
+                                           body: JSON.stringify({ email: addr, plan: plan.value }) });
+      if (r.ok && r.body.authorization_url) { location.href = r.body.authorization_url; return; }
+      show(MSG_PAY[r.body.error] || "Couldn't start the payment (" + r.status + "). Try again, or request by email instead.", "err");
+    } catch (err) { show(offline(err), "err"); }
+    submit.disabled = false; submit.textContent = payLabel();
+  });
+
+  async function confirmPayment(reference) {
+    document.getElementById("pricing").scrollIntoView();
+    show("Confirming your payment…", "");
+    for (let i = 0; i < 6; i++) {
+      try {
+        const r = await call(FN + "/verify?reference=" + encodeURIComponent(reference));
+        if (r.ok && r.body.key) {
+          keyValue.textContent = r.body.key;
+          document.getElementById("f-key-help").textContent =
+            `It covers ${r.body.max_devices} devices. Enter it in ClipSync: Mac: menu → License… · Windows: tray icon → ` +
+            "Enter license key… · Android: Enter license key. Keep it somewhere safe.";
+          keybox.hidden = false;
+          show("", "");
+          history.replaceState(null, "", location.pathname + "#pricing");
+          return;
+        }
+        if (r.status !== 402 && r.status !== 500) break;
+      } catch (_) { /* retry */ }
+      await new Promise((res) => setTimeout(res, 2500));
+    }
+    show("We couldn't confirm the payment yet. If you were charged, your key is safe: email us with reference " + reference + ".", "err");
+  }
+  document.getElementById("f-key-copy").addEventListener("click", async (ev) => {
+    try { await navigator.clipboard.writeText(keyValue.textContent); ev.target.textContent = "Copied ✓"; } catch (_) {}
+  });
+  const ref = new URLSearchParams(location.search).get("reference");
+  if (ref) confirmPayment(ref);
+
+  // Fallback: request by email (shows up in ClipSync Admin).
+  request.addEventListener("click", async () => {
+    const addr = validEmail();
+    if (!addr) return;
+    if (honey.value) return show("Request received. You'll get your license key by email.", "ok");
+    request.disabled = true; show("Sending…", "");
     try {
       const r = await fetch(SUPABASE_URL + "/rest/v1/rpc/request_license", {
-        method: "POST",
-        headers: { apikey: SUPABASE_KEY, "Content-Type": "application/json" },
+        method: "POST", headers: { apikey: SUPABASE_KEY, "Content-Type": "application/json" },
         body: JSON.stringify({ p_email: addr, p_plan: plan.value, p_note: note.value.trim() || null }),
-        signal: ctrl.signal,
       });
       const body = await r.text();
-      if (r.ok) {
-        show("Request received. You'll get your license key by email.", "ok");
-        form.reset();
-        markPlan(plan.value);
-      } else {
+      if (r.ok) { show("Request received. You'll get your license key by email.", "ok"); note.value = ""; }
+      else {
         const code = Object.keys(MESSAGES).find((k) => body.includes(k));
-        show(code ? MESSAGES[code] : "Your request wasn't sent: the server returned an error (" + r.status + "). Try again in a few minutes.", "err");
+        show(code ? MESSAGES[code] : "Your request wasn't sent (" + r.status + "). Try again in a few minutes.", "err");
       }
-    } catch (err) {
-      show(err.name === "AbortError"
-        ? "The request timed out. Check your connection and try again."
-        : "Your request wasn't sent because you appear to be offline. Check your connection and try again.", "err");
-    } finally {
-      clearTimeout(t);
-      submit.disabled = false;
-      submit.textContent = "Request license";
-    }
+    } catch (err) { show(offline(err), "err"); }
+    request.disabled = false;
   });
 })();

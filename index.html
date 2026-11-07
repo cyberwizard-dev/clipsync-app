@@ -204,6 +204,7 @@
       <button type="button" class="plan" data-plan="dev2">
         <span class="plan-name">2 devices</span>
         <span class="plan-price"><span data-price="dev2"></span><span class="per">one-time</span></span>
+        <span class="plan-ngn" data-ngn="dev2"></span>
         <span class="plan-desc">Up to 2 devices in your pairing. Pay once, use forever.</span>
         <span class="plan-pick">Choose 2 devices</span>
       </button>
@@ -211,21 +212,23 @@
         <span class="plan-badge">Most popular</span>
         <span class="plan-name">5 devices</span>
         <span class="plan-price"><span data-price="dev5"></span><span class="per">one-time</span></span>
+        <span class="plan-ngn" data-ngn="dev5"></span>
         <span class="plan-desc">Up to 5 devices in your pairing. Pay once, use forever.</span>
         <span class="plan-pick">Choose 5 devices</span>
       </button>
       <button type="button" class="plan" data-plan="dev10">
         <span class="plan-name">10 devices</span>
         <span class="plan-price"><span data-price="dev10"></span><span class="per">one-time</span></span>
+        <span class="plan-ngn" data-ngn="dev10"></span>
         <span class="plan-desc">Up to 10 devices in your pairing. Pay once, use forever.</span>
         <span class="plan-pick">Choose 10 devices</span>
       </button>
     </div>
-    <p class="plans-note"><strong>Add devices any time.</strong> License keys stack: activate a second key and its devices are added to your pairing, so two 2-device keys cover 4 devices. Prices in US dollars.</p>
+    <p class="plans-note"><strong>Add devices any time.</strong> License keys stack: activate a second key and its devices are added to your pairing, so two 2-device keys cover 4 devices. You pay in naira at today's exchange rate, securely through Paystack (card, bank transfer or USSD).</p>
 
     <form id="license-form" class="license" novalidate>
-      <h3 id="form-title">Get a license</h3>
-      <p class="form-help">Tell us where to send it. We'll email your license key, which you enter in the ClipSync app.</p>
+      <h3 id="form-title">Buy a license</h3>
+      <p class="form-help">Pay with Paystack and your license key appears right here. We also keep it on file for your email, so you can always ask for it again.</p>
       <div class="field">
         <label for="f-email">Email</label>
         <input id="f-email" name="email" type="email" autocomplete="email" required inputmode="email" placeholder="you@example.com">
@@ -239,7 +242,7 @@
         </select>
       </div>
       <div class="field field-wide">
-        <label for="f-note">Note <span class="opt">(optional)</span></label>
+        <label for="f-note">Note <span class="opt">(optional, for email requests)</span></label>
         <textarea id="f-note" name="note" rows="2" maxlength="500" placeholder="Anything we should know"></textarea>
       </div>
       <div class="hp" aria-hidden="true">
@@ -247,8 +250,14 @@
         <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
       </div>
       <div class="form-foot">
-        <button class="btn btn-primary" type="submit" id="f-submit">Request license</button>
+        <button class="btn btn-primary" type="submit" id="f-submit">Pay with Paystack</button>
+        <button class="btn-link" type="button" id="f-request">Request by email instead</button>
         <p id="f-status" class="status" role="status" aria-live="polite"></p>
+      </div>
+      <div id="f-key" class="keybox" hidden>
+        <p class="keybox-title">Payment received. Here's your license key:</p>
+        <div class="keybox-row"><code id="f-key-value"></code><button class="btn" type="button" id="f-key-copy">Copy</button></div>
+        <p class="keybox-help" id="f-key-help">Enter it in ClipSync: Mac: menu → License… · Windows: tray icon → Enter license key… · Android: Enter license key. Keep it somewhere safe.</p>
       </div>
     </form>
   </section>
