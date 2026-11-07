@@ -199,29 +199,17 @@
   </section>
 
   <section id="pricing" class="pricing wrap" aria-labelledby="pricing-title">
-    <h2 id="pricing-title">Try it for 7 days, then pay once</h2>
-    <p class="section-lede">Every new pairing works free for 7 days on up to 2 devices. After that, one lifetime license covers your pairing, priced by how many devices are in it.</p>
-    <div class="plans">
-      <button type="button" class="plan" data-plan="dev3">
-        <span class="plan-name">3 devices</span>
-        <span class="plan-price"><span data-price="dev3"></span><span class="per">one-time</span></span>
-        <span class="plan-ngn" data-ngn="dev3"></span>
-        <span class="plan-desc">Up to 3 devices in your pairing, e.g. a Mac, a PC and a phone. Pay once, use forever.</span>
-        <span class="plan-pick">Choose 3 devices</span>
-      </button>
-      <button type="button" class="plan plan-best" data-plan="dev5">
-        <span class="plan-badge">Most popular</span>
-        <span class="plan-name">5 devices</span>
-        <span class="plan-price"><span data-price="dev5"></span><span class="per">one-time</span></span>
-        <span class="plan-ngn" data-ngn="dev5"></span>
-        <span class="plan-desc">Up to 5 devices in your pairing. Pay once, use forever.</span>
-        <span class="plan-pick">Choose 5 devices</span>
-      </button>
+    <h2 id="pricing-title">Try it free for 7 days</h2>
+    <p class="section-lede">Every new pairing works free for 7 days on up to 2 devices. Then pick how many devices and for how long. Renew any time: the new period is added on top of the time you have left.</p>
+    <div class="tier-switch" role="group" aria-label="Number of devices">
+      <button type="button" data-tier="3" aria-pressed="true">3 devices</button>
+      <button type="button" data-tier="5" aria-pressed="false">5 devices</button>
     </div>
-    <p class="plans-note"><strong>Add devices any time.</strong> License keys stack: activate a second key and its devices are added to your pairing, so two 3-device keys cover 6 devices. You pay in naira at today's exchange rate, securely through Paystack (card, bank transfer or USSD).</p>
+    <div class="plans" id="plans" aria-live="polite"></div>
+    <p class="plans-note"><strong>Need more devices?</strong> Add extra devices to an existing license for <span id="addon-price">$3.99 each</span>, paid once. <a href="#license-form" id="addon-link">Add devices</a>. Prices in US dollars, charged in naira at today's exchange rate through Paystack (card, bank transfer or USSD).</p>
 
     <form id="license-form" class="license" novalidate>
-      <h3 id="form-title">Buy a license</h3>
+      <h3 id="form-title">Buy or renew a license</h3>
       <p class="form-help">Pay with Paystack and your license key appears right here. We also keep it on file for your email, so you can always ask for it again.</p>
       <div class="field">
         <label for="f-email">Email</label>
@@ -229,10 +217,12 @@
       </div>
       <div class="field">
         <label for="f-plan">Plan</label>
-        <select id="f-plan" name="plan">
-          <option value="dev3">3 devices ($12.99 one-time)</option>
-          <option value="dev5" selected>5 devices ($19.99 one-time)</option>
-        </select>
+        <select id="f-plan" name="plan"></select>
+      </div>
+      <div class="field" id="f-qty-field" hidden>
+        <label for="f-qty">Extra devices</label>
+        <input id="f-qty" name="quantity" type="number" min="1" max="10" value="1" inputmode="numeric">
+        <p class="hint">For a pairing that already has a license. You'll get a key to enter in the app.</p>
       </div>
       <div class="field field-wide">
         <label for="f-note">Note <span class="opt">(optional, for email requests)</span></label>
@@ -287,6 +277,10 @@
       <p>After 7 days your devices stay paired and your history stays on the Mac, but new clips stop syncing until you enter a license key in the app. The trial covers up to 2 devices.</p>
     </details>
     <details>
+      <summary>What happens when my license ends?</summary>
+      <p>The app shows when your license ends. Renew before then and the new period is added on top, so you don't lose any days. If it runs out, your devices stay paired but new clips stop syncing until you renew.</p>
+    </details>
+    <details>
       <summary>I lost my license key. What now?</summary>
       <p>Email <a href="mailto:thatwebdeveloper1@gmail.com?subject=ClipSync%20license%20key">thatwebdeveloper1@gmail.com</a> from the address you paid with and we'll send it again.</p>
     </details>
@@ -296,7 +290,7 @@
     </details>
     <details>
       <summary>Can I use several phones?</summary>
-      <p>Yes. A license covers the devices you pair together: 3 or 5, depending on the license you choose. Need more later? Add devices by activating another key. Keys stack, so a 5-device key plus a 3-device key covers 8.</p>
+      <p>Yes. A license covers the devices you pair together: 3 or 5, depending on the plan. Need more later? Buy extra devices ($3.99 each, paid once) and enter that key in the app; they're added to your current license.</p>
     </details>
   </section>
 </main>

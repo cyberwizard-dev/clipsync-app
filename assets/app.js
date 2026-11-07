@@ -1,18 +1,18 @@
 // ClipSync landing page.
-// Lifetime licenses in US dollars, keyed by backend plan id (number of devices). An empty string hides a price.
-// (The form's <select> labels in index.html repeat these prices: update both. The server's paystack function holds
-// the real prices; buyers are charged in naira at today's rate.)
-const PRICES = { dev3: "$12.99", dev5: "$19.99" };
+// Plans are loaded from the server (/paystack/quote), which also decides what is charged (naira at today's rate).
+// This list is only shown until the quote arrives, or if it fails.
+const FALLBACK_PLANS = [
+  { id: "dev3_3m", devices: 3, months: 3, period: "3 months", usd: 4.99 },
+  { id: "dev3_6m", devices: 3, months: 6, period: "6 months", usd: 8.99 },
+  { id: "dev3_12m", devices: 3, months: 12, period: "1 year", usd: 14.99, popular: true },
+  { id: "dev5_3m", devices: 5, months: 3, period: "3 months", usd: 6.99 },
+  { id: "dev5_6m", devices: 5, months: 6, period: "6 months", usd: 11.99 },
+  { id: "dev5_12m", devices: 5, months: 12, period: "1 year", usd: 19.99 },
+];
 
 const SUPABASE_URL = "https://msixdmlumwtcvhxnqccn.supabase.co";
 const SUPABASE_KEY = "sb_publishable__7TSPCjzdY-wbggHxMsM8Q_UgI17Vqr"; // publishable: public by design
 
-// ---- Prices -----------------------------------------------------------------
-document.querySelectorAll("[data-price]").forEach((el) => {
-  const price = PRICES[el.dataset.price] || "";
-  el.textContent = price;
-  if (!price) el.closest(".plan-price").hidden = true;
-});
 
 // ---- Live demo: real AES-256-GCM in the browser, same AAD as the apps ----------
 (() => {
@@ -76,19 +76,68 @@ document.querySelectorAll("[data-price]").forEach((el) => {
   const honey = form.querySelector("#f-website");
   const submit = form.querySelector("#f-submit");
   const status = form.querySelector("#f-status");
-  const cards = document.querySelectorAll(".plan[data-plan]");
+  const qtyField = form.querySelector("#f-qty-field");
+  const qty = form.querySelector("#f-qty");
+  const plansBox = document.getElementById("plans");
+  let plans = FALLBACK_PLANS, addon = { usd_per_device: 3.99, ngn_per_device: null, max_quantity: 10 }, tier = 3;
+  const usd = (n) => "$" + n.toFixed(2);
+  const naira = (n) => "₦" + Math.round(n).toLocaleString("en-NG");
+  const qtyValue = () => Math.min(10, Math.max(1, parseInt(qty.value, 10) || 1));
 
-  function markPlan(value) {
-    cards.forEach((c) => c.setAttribute("aria-pressed", String(c.dataset.plan === value)));
+  function renderCards() {
+    document.querySelectorAll(".tier-switch button").forEach((b) => b.setAttribute("aria-pressed", String(+b.dataset.tier === tier)));
+    plansBox.innerHTML = "";
+    for (const p of plans.filter((x) => x.devices === tier)) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "plan" + (p.months === 12 ? " plan-best" : "");
+      b.dataset.plan = p.id;
+      b.innerHTML = (p.months === 12 ? '<span class="plan-badge">Best value</span>' : "") +
+        `<span class="plan-name">${p.period}</span>` +
+        `<span class="plan-price"><span data-price>${usd(p.usd)}</span><span class="per">${(p.usd / p.months).toFixed(2) === "NaN" ? "" : "≈ " + usd(p.usd / p.months) + " a month"}</span></span>` +
+        `<span class="plan-ngn">${p.ngn ? "≈ " + naira(p.ngn) + " today" : ""}</span>` +
+        `<span class="plan-desc">Up to ${p.devices} devices in your pairing for ${p.period}.</span>` +
+        `<span class="plan-pick">Choose ${p.period}</span>`;
+      b.setAttribute("aria-pressed", String(plan.value === p.id));
+      b.addEventListener("click", () => {
+        plan.value = p.id; onPlanChange();
+        form.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+        setTimeout(() => email.focus({ preventScroll: true }), 300);
+      });
+      plansBox.appendChild(b);
+    }
   }
-  cards.forEach((c) => c.addEventListener("click", () => {
-    plan.value = c.dataset.plan;
-    markPlan(plan.value);
-    form.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
-    setTimeout(() => email.focus({ preventScroll: true }), 300);
-  }));
-  plan.addEventListener("change", () => markPlan(plan.value));
-  markPlan(plan.value);
+
+  function renderSelect() {
+    const keep = plan.value;
+    plan.innerHTML = "";
+    for (const p of plans) {
+      const o = new Option(`${p.devices} devices · ${p.period} · ${usd(p.usd)}${p.ngn ? " (≈ " + naira(p.ngn) + ")" : ""}`, p.id);
+      plan.add(o);
+    }
+    plan.add(new Option(`Extra devices for an existing license · ${usd(addon.usd_per_device)} each`, "addon"));
+    plan.value = keep && [...plan.options].some((o) => o.value === keep) ? keep : (plans.find((p) => p.popular) || plans[0]).id;
+  }
+
+  function price() {
+    if (plan.value === "addon") return addon.ngn_per_device ? Math.ceil(addon.ngn_per_device * qtyValue() / 100) * 100 : null;
+    return (plans.find((p) => p.id === plan.value) || {}).ngn || null;
+  }
+  const payLabel = () => (price() ? "Pay " + naira(price()) + " with Paystack" : "Pay with Paystack");
+
+  function onPlanChange() {
+    qtyField.hidden = plan.value !== "addon";
+    const p = plans.find((x) => x.id === plan.value);
+    if (p && p.devices !== tier) { tier = p.devices; renderCards(); }
+    document.querySelectorAll(".plan[data-plan]").forEach((c) => c.setAttribute("aria-pressed", String(c.dataset.plan === plan.value)));
+    if (!submit.disabled) submit.textContent = payLabel();
+  }
+
+  document.querySelectorAll(".tier-switch button").forEach((b) => b.addEventListener("click", () => { tier = +b.dataset.tier; renderCards(); }));
+  plan.addEventListener("change", onPlanChange);
+  qty.addEventListener("input", onPlanChange);
+  document.getElementById("addon-link").addEventListener("click", () => { plan.value = "addon"; onPlanChange(); });
+  renderSelect(); renderCards(); onPlanChange();
 
   function show(msg, kind) {
     status.textContent = msg;
@@ -97,7 +146,8 @@ document.querySelectorAll("[data-price]").forEach((el) => {
 
   const MESSAGES = {
     invalid_email: "That email address doesn't look right. Check it and try again.",
-    invalid_plan: "Choose a 3 or 5-device license, then try again.",
+    invalid_plan: "Choose a plan, then try again.",
+    invalid_quantity: "Choose between 1 and 10 extra devices.",
     too_many_requests: "We've already received several requests from this email. We'll be in touch soon.",
   };
 
@@ -105,22 +155,17 @@ document.querySelectorAll("[data-price]").forEach((el) => {
   const request = document.getElementById("f-request");
   const keybox = document.getElementById("f-key");
   const keyValue = document.getElementById("f-key-value");
-  let ngn = {};
-  const naira = (n) => "₦" + Math.round(n).toLocaleString("en-NG");
-  const payLabel = () => (ngn[plan.value] ? "Pay " + naira(ngn[plan.value]) + " with Paystack" : "Pay with Paystack");
-
-  // Today's naira prices from the server (the amount actually charged is decided there too).
+  // Plans and today's naira prices from the server (it also decides the amount actually charged).
   fetch(FN + "/quote").then((r) => r.json()).then((q) => {
-    for (const [p, v] of Object.entries(q.prices || {})) {
-      ngn[p] = v.ngn;
-      document.querySelectorAll(`[data-ngn="${p}"]`).forEach((el) => (el.textContent = "≈ " + naira(v.ngn) + " today"));
-    }
-    submit.textContent = payLabel();
+    if (Array.isArray(q.plans) && q.plans.length) plans = q.plans;
+    if (q.addon) addon = q.addon;
+    document.getElementById("addon-price").textContent =
+      usd(addon.usd_per_device) + " each" + (addon.ngn_per_device ? " (≈ " + naira(addon.ngn_per_device) + ")" : "");
+    renderSelect(); renderCards(); onPlanChange();
   }).catch(() => {});
-  plan.addEventListener("change", () => { if (!submit.disabled) submit.textContent = payLabel(); });
 
   const MSG_PAY = {
-    invalid_email: MESSAGES.invalid_email, invalid_plan: MESSAGES.invalid_plan,
+    invalid_email: MESSAGES.invalid_email, invalid_plan: MESSAGES.invalid_plan, invalid_quantity: MESSAGES.invalid_quantity,
     rate_unavailable: "We couldn't get today's exchange rate. Try again in a minute, or request by email instead.",
     not_configured: "Payments aren't switched on yet. Request by email instead and we'll send your key.",
   };
@@ -158,7 +203,7 @@ document.querySelectorAll("[data-price]").forEach((el) => {
     submit.disabled = true; submit.textContent = "Opening Paystack…"; show("", "");
     try {
       const r = await call(FN + "/init", { method: "POST", headers: { "Content-Type": "application/json" },
-                                           body: JSON.stringify({ email: addr, plan: plan.value }) });
+                                           body: JSON.stringify(plan.value === "addon" ? { email: addr, plan: "addon", quantity: qtyValue() } : { email: addr, plan: plan.value }) });
       if (r.ok && r.body.authorization_url) { location.href = r.body.authorization_url; return; }
       show(MSG_PAY[r.body.error] || "Couldn't start the payment (" + r.status + "). Try again, or request by email instead.", "err");
     } catch (err) { show(offline(err), "err"); }
@@ -174,8 +219,10 @@ document.querySelectorAll("[data-price]").forEach((el) => {
         if (r.ok && r.body.key) {
           keyValue.textContent = r.body.key;
           document.getElementById("f-key-help").textContent =
-            `It covers ${r.body.max_devices} devices. Enter it in ClipSync: Mac: menu → License… · Windows: tray icon → ` +
-            "Enter license key… · Android: Enter license key. Keep it somewhere safe.";
+            (r.body.plan === "addon"
+              ? `It adds ${r.body.max_devices} extra devices to a pairing that already has a license. `
+              : `It covers ${r.body.max_devices} devices; the time starts when you activate it (or after your current period if you're renewing). `) +
+            "Enter it in ClipSync: Mac: menu → License… · Windows: tray icon → Enter license key… · Android: Enter license key.";
           keybox.hidden = false;
           show("", "");
           history.replaceState(null, "", location.pathname + "#pricing");
