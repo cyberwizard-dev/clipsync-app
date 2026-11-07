@@ -2,7 +2,7 @@
 // Lifetime licenses in US dollars, keyed by backend plan id (number of devices). An empty string hides a price.
 // (The form's <select> labels in index.html repeat these prices: update both. The server's paystack function holds
 // the real prices; buyers are charged in naira at today's rate.)
-const PRICES = { dev2: "$9.99", dev5: "$19.99", dev10: "$29.99" };
+const PRICES = { dev3: "$12.99", dev5: "$19.99" };
 
 const SUPABASE_URL = "https://msixdmlumwtcvhxnqccn.supabase.co";
 const SUPABASE_KEY = "sb_publishable__7TSPCjzdY-wbggHxMsM8Q_UgI17Vqr"; // publishable: public by design
@@ -97,7 +97,7 @@ document.querySelectorAll("[data-price]").forEach((el) => {
 
   const MESSAGES = {
     invalid_email: "That email address doesn't look right. Check it and try again.",
-    invalid_plan: "Choose a 2, 5 or 10-device license, then try again.",
+    invalid_plan: "Choose a 3 or 5-device license, then try again.",
     too_many_requests: "We've already received several requests from this email. We'll be in touch soon.",
   };
 

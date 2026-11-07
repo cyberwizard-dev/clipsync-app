@@ -15,7 +15,7 @@ Copy on your Mac or Windows PC and paste on your Android phone, and back. Text a
 
 ## Licensing
 
-Every new pairing gets a 7-day free trial on up to 2 devices. After that, buy a one-time lifetime license on the [website](https://cyberwizard-dev.github.io/clipsync-app/#pricing), priced by the number of devices: 2 devices $9.99, 5 devices $19.99, 10 devices $29.99. Keys stack, so you can add devices any time.
+Every new pairing gets a 7-day free trial on up to 2 devices. After that, buy a one-time lifetime license on the [website](https://cyberwizard-dev.github.io/clipsync-app/#pricing), priced by the number of devices: 3 devices $12.99, 5 devices $19.99. Keys stack, so you can add devices any time.
 
 ---
 
