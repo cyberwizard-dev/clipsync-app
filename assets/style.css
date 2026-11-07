@@ -273,3 +273,8 @@ kbd {
 .keybox-row { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
 .keybox-row code { font-size: 1.05rem; letter-spacing: .04em; word-break: break-all; padding: .4rem .6rem; border-radius: 8px; background: color-mix(in srgb, currentColor 8%, transparent); }
 .keybox-help { margin: .6rem 0 0; font-size: .9rem; opacity: .8; }
+
+.refunds ul { padding-left: 1.2rem; line-height: 1.6; }
+.refunds li { margin: .35rem 0; }
+.foot { flex-wrap: wrap; gap: .4rem 1.2rem; }
+.foot a { overflow-wrap: anywhere; }

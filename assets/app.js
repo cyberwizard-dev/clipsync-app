@@ -185,7 +185,7 @@ document.querySelectorAll("[data-price]").forEach((el) => {
       } catch (_) { /* retry */ }
       await new Promise((res) => setTimeout(res, 2500));
     }
-    show("We couldn't confirm the payment yet. If you were charged, your key is safe: email us with reference " + reference + ".", "err");
+    show("We couldn't confirm the payment yet. If you were charged, your key is safe: email thatwebdeveloper1@gmail.com with reference " + reference + " and we'll sort it out.", "err");
   }
   document.getElementById("f-key-copy").addEventListener("click", async (ev) => {
     try { await navigator.clipboard.writeText(keyValue.textContent); ev.target.textContent = "Copied ✓"; } catch (_) {}
