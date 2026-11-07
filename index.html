@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ClipSync: Mac and Android clipboard sync</title>
+<meta name="description" content="Copy on your Mac and paste on your Android phone, and back. End-to-end encrypted clipboard sync for text and images.">
+<meta name="theme-color" content="#F3F5F8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1526" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top wrap">
+  <a class="brand" href="#" aria-label="ClipSync home">
+    <img src="assets/icon.svg" alt="" width="28" height="28">
+    <span>ClipSync</span>
+  </a>
+  <nav aria-label="Sections">
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+    <a class="nav-cta" href="#download">Download</a>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="hero wrap" aria-labelledby="hero-title">
+    <h1 id="hero-title">Copy on your Mac.<br>Paste on your phone.</h1>
+    <p class="lede">ClipSync keeps the clipboard of your Mac and your Android phone in step, both ways, for text and images. Everything is encrypted on your device before it leaves, and the key never reaches our servers.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#download">Download for free</a>
+      <a class="btn btn-quiet" href="#how">See how pairing works</a>
+    </div>
+
+    <figure class="demo" aria-label="Live demo: type on either device">
+      <div class="device mac">
+        <div class="device-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span>Your Mac</span></div>
+        <label class="visually-hidden" for="demo-mac">Text copied on your Mac</label>
+        <textarea id="demo-mac" rows="4" spellcheck="false">Meeting moved to 3:30, room 4B</textarea>
+      </div>
+
+      <div class="wire" aria-hidden="true">
+        <div class="wire-label">What the server stores</div>
+        <code id="demo-cipher">…</code>
+        <div class="wire-foot">AES-256-GCM, encrypted in this page right now</div>
+      </div>
+
+      <div class="device phone">
+        <div class="device-bar"><span class="notch" aria-hidden="true"></span><span>Your phone</span></div>
+        <label class="visually-hidden" for="demo-phone">Text on your phone's clipboard</label>
+        <textarea id="demo-phone" rows="4" spellcheck="false"></textarea>
+      </div>
+      <figcaption>Type in either box. The middle column is the real ciphertext, made with a key that exists only in this browser tab.</figcaption>
+    </figure>
+  </section>
+
+  <section id="features" class="features wrap" aria-labelledby="features-title">
+    <h2 id="features-title">It works in both directions</h2>
+    <div class="lanes">
+      <div class="lane">
+        <h3><span class="arrow" aria-hidden="true">Mac <b>→</b> phone</span><span class="visually-hidden">From Mac to phone</span></h3>
+        <ul>
+          <li><strong>Automatic.</strong> Copy anything on the Mac and it lands on your phone's clipboard a moment later.</li>
+          <li><strong>Passwords stay put.</strong> Items your password manager marks as secret are never synced.</li>
+          <li><strong>Text and images.</strong> Screenshots and photos up to 5 MB, shrunk on the way if needed.</li>
+        </ul>
+      </div>
+      <div class="lane">
+        <h3><span class="arrow" aria-hidden="true">Phone <b>→</b> Mac</span><span class="visually-hidden">From phone to Mac</span></h3>
+        <ul>
+          <li><strong>Auto-send.</strong> Copies on your phone go to the Mac on their own, after a one-time setup.</li>
+          <li><strong>Or send by hand</strong> with the button on the ClipSync notification, the Quick Settings tile, or the share sheet.</li>
+          <li><strong>Share a screenshot</strong> straight from the gallery to every paired device.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="extras">
+      <div>
+        <h3>A clipboard history on the Mac</h3>
+        <p>Press <kbd>⌘</kbd><kbd>⇧</kbd><kbd>V</kbd> to search everything you've copied. Pin the things you reuse, and paste as plain text when formatting gets in the way.</p>
+      </div>
+      <div>
+        <h3>All your devices, live</h3>
+        <p>Pair several phones and Macs together and see which ones are online right now. Remove a device and it loses access immediately.</p>
+      </div>
+      <div>
+        <h3>Nothing lingers</h3>
+        <p>Synced clips are deleted from the server after 24 hours. Clear History empties it everywhere at once.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" class="how wrap" aria-labelledby="how-title">
+    <h2 id="how-title">Set up in a minute</h2>
+    <ol class="steps">
+      <li><h3>Install the Mac app</h3><p>It lives in the menu bar. No Dock icon, no window in your way.</p></li>
+      <li><h3>Choose Pair Phone…</h3><p>The Mac shows a QR code that holds your pairing and your encryption key.</p></li>
+      <li><h3>Scan it on Android</h3><p>Open ClipSync on your phone, scan the code, and you're syncing.</p></li>
+    </ol>
+  </section>
+
+  <section id="download" class="download wrap" aria-labelledby="download-title">
+    <h2 id="download-title">Download</h2>
+    <div class="dl-grid">
+      <div class="dl">
+        <h3>Mac</h3>
+        <p class="req">macOS 14 or later, Apple Silicon</p>
+        <a class="btn btn-primary" href="https://github.com/cyberwizard-dev/clipsync-app/releases/latest/download/ClipSync-mac.zip">Download ClipSync for Mac</a>
+        <details>
+          <summary>Opening it the first time</summary>
+          <p>ClipSync isn't notarized by Apple yet, so macOS asks before opening it.</p>
+          <ol>
+            <li>Unzip the download and move ClipSync to Applications.</li>
+            <li>Right-click ClipSync and choose Open, then Open again.</li>
+            <li>If you don't see an Open button, go to System Settings → Privacy &amp; Security and choose Open Anyway.</li>
+          </ol>
+        </details>
+      </div>
+      <div class="dl">
+        <h3>Android</h3>
+        <p class="req">Android 8 or later</p>
+        <a class="btn btn-primary" href="https://github.com/cyberwizard-dev/clipsync-app/releases/latest/download/ClipSync.apk">Download the APK</a>
+        <details>
+          <summary>Installing and setting up auto-send</summary>
+          <ol>
+            <li>Open the APK and allow your browser to install apps when Android asks.</li>
+            <li>On first launch, ClipSync walks you through auto-send setup using Wireless debugging. It takes about a minute on Android 11 or later and needs no computer.</li>
+          </ol>
+        </details>
+      </div>
+    </div>
+    <p class="all-releases"><a href="https://github.com/cyberwizard-dev/clipsync-app/releases">All versions and release notes</a></p>
+  </section>
+
+  <section id="pricing" class="pricing wrap" aria-labelledby="pricing-title">
+    <h2 id="pricing-title">Try it for 3 days, then pick a license</h2>
+    <p class="section-lede">Every new pairing works free for 3 days. One license covers your whole pairing: every Mac and phone paired together.</p>
+    <div class="plans">
+      <button type="button" class="plan" data-plan="week">
+        <span class="plan-name">Week</span>
+        <span class="plan-price" data-price="week"></span>
+        <span class="plan-desc">7 days from the moment you activate it.</span>
+        <span class="plan-pick">Choose Week</span>
+      </button>
+      <button type="button" class="plan" data-plan="month">
+        <span class="plan-name">Month</span>
+        <span class="plan-price" data-price="month"></span>
+        <span class="plan-desc">30 days from activation.</span>
+        <span class="plan-pick">Choose Month</span>
+      </button>
+      <button type="button" class="plan plan-life" data-plan="lifetime">
+        <span class="plan-name">Lifetime</span>
+        <span class="plan-price" data-price="lifetime"></span>
+        <span class="plan-desc">Pay once. Includes future updates.</span>
+        <span class="plan-pick">Choose Lifetime</span>
+      </button>
+    </div>
+
+    <form id="license-form" class="license" novalidate>
+      <h3 id="form-title">Get a license</h3>
+      <p class="form-help">Tell us where to send it. We'll email your license key, which you enter in the ClipSync app.</p>
+      <div class="field">
+        <label for="f-email">Email</label>
+        <input id="f-email" name="email" type="email" autocomplete="email" required inputmode="email" placeholder="you@example.com">
+      </div>
+      <div class="field">
+        <label for="f-plan">Plan</label>
+        <select id="f-plan" name="plan">
+          <option value="week">Week</option>
+          <option value="month" selected>Month</option>
+          <option value="lifetime">Lifetime</option>
+        </select>
+      </div>
+      <div class="field field-wide">
+        <label for="f-note">Note <span class="opt">(optional)</span></label>
+        <textarea id="f-note" name="note" rows="2" maxlength="500" placeholder="Anything we should know"></textarea>
+      </div>
+      <div class="hp" aria-hidden="true">
+        <label for="f-website">Leave this empty</label>
+        <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
+      </div>
+      <div class="form-foot">
+        <button class="btn btn-primary" type="submit" id="f-submit">Request license</button>
+        <p id="f-status" class="status" role="status" aria-live="polite"></p>
+      </div>
+    </form>
+  </section>
+
+  <section id="faq" class="faq wrap" aria-labelledby="faq-title">
+    <h2 id="faq-title">Questions</h2>
+    <details>
+      <summary>Is it secure?</summary>
+      <p>Each clip is encrypted on your device with AES-256-GCM before it's uploaded. The key is created when you pair and travels only inside the QR code, from your Mac to your phone. Our server stores ciphertext it can't read, and deletes it after 24 hours.</p>
+    </details>
+    <details>
+      <summary>Which Android versions work?</summary>
+      <p>Android 8 and later. Automatic phone-to-Mac sending set up from the phone itself needs Android 11 or later. On older phones you can grant it once from a computer, or send by hand with the notification button, tile or share sheet.</p>
+    </details>
+    <details>
+      <summary>Why does auto-send need Wireless debugging?</summary>
+      <p>Since Android 10, apps in the background aren't allowed to read the clipboard. ClipSync works around this with a permission Android only hands out through its developer tools. Wireless debugging lets the app grant it to itself once, on your phone, without a computer. You can turn Wireless debugging off again afterwards.</p>
+    </details>
+    <details>
+      <summary>What happens after the trial?</summary>
+      <p>After 3 days your devices stay paired and your history stays on the Mac, but new clips stop syncing until you enter a license key in the app.</p>
+    </details>
+    <details>
+      <summary>Can I use several phones?</summary>
+      <p>Yes. One license covers your whole pairing, which is all the devices you've paired together, up to 20.</p>
+    </details>
+  </section>
+</main>
+
+<footer class="foot wrap">
+  <span>© 2026 ClipSync</span>
+  <a href="https://github.com/cyberwizard-dev/clipsync-app/releases">Releases</a>
+</footer>
+
+<script src="assets/app.js" defer></script>
+</body>
+</html>
