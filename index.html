@@ -23,6 +23,7 @@
   </a>
   <nav aria-label="Sections">
     <a href="#features">Features</a>
+    <a href="#modes">Local &amp; files</a>
     <a href="#why">Compare</a>
     <a href="#pricing">Pricing</a>
     <a href="#faq">FAQ</a>
@@ -85,10 +86,6 @@
 
     <div class="extras">
       <div>
-        <h3>Send files over Wi-Fi</h3>
-        <p>Right-click a file in Finder or Explorer, or share it on Android, and pick one device or all of them. It goes straight across your network, encrypted, with no size limit, and never touches our server.</p>
-      </div>
-      <div>
         <h3>Instant receive</h3>
         <p>Small clips travel inside the realtime message itself, so they land on the other device without a second download.</p>
       </div>
@@ -115,6 +112,44 @@
     </div>
   </section>
 
+  <section id="modes" class="features wrap" aria-labelledby="modes-title">
+    <h2 id="modes-title">Local when it can, server when it must</h2>
+    <p class="section-lede">ClipSync picks the fastest route for every clip by itself. There's nothing to switch.</p>
+    <div class="lanes">
+      <div class="lane">
+        <h3>Local network mode</h3>
+        <ul>
+          <li><strong>Direct, device to device.</strong> When your devices share a Wi-Fi, clips go straight from one to the other, without a round trip to the internet.</li>
+          <li><strong>Nothing touches the server.</strong> If every device confirms a clip locally, it's never uploaded at all.</li>
+          <li><strong>Only your devices.</strong> Each device proves it holds your pairing's key before it can connect, and every clip is encrypted the same way as online.</li>
+        </ul>
+      </div>
+      <div class="lane">
+        <h3>Server mode</h3>
+        <ul>
+          <li><strong>Works anywhere.</strong> Phone on mobile data, laptop at home: clips go through our server, end-to-end encrypted, so it only ever sees ciphertext.</li>
+          <li><strong>Only for the devices that need it.</strong> A clip is uploaded just for devices that didn't get it locally within 3 seconds.</li>
+          <li><strong>Gone in 24 hours.</strong> Synced clips are deleted from the server after a day.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="extras">
+      <div>
+        <h3>Instant file sharing over Wi-Fi</h3>
+        <p>Right-click files in Finder or Explorer, or share them on Android, and pick one device or every device on your Wi-Fi. They go across your own network at full speed, encrypted, with no size limit, and never through our server.</p>
+      </div>
+      <div>
+        <h3>See it move</h3>
+        <p>A small progress panel floats on your Mac or PC while files send or arrive, then shows when each one is done. Android shows progress on the Home screen.</p>
+      </div>
+      <div>
+        <h3>Safe on arrival</h3>
+        <p>Files land in Downloads › ClipSync, checked against their SHA-256 before they appear. Nothing is ever overwritten; a second copy gets “(2)” added to its name.</p>
+      </div>
+    </div>
+    <p class="table-note">Prefer the server only? Turn off Settings › Sync over Local Network. File sharing needs the local network, since files never go through the server.</p>
+  </section>
+
   <section id="why" class="why wrap" aria-labelledby="why-title">
     <h2 id="why-title">Why ClipSync</h2>
     <p class="section-lede">Most clipboard tools cover one pair of platforms, one network, or one direction. Here's how ClipSync compares.</p>
@@ -133,8 +168,9 @@
         <tbody>
           <tr><th scope="row">Works Mac ↔ Android</th><td class="us yes">Yes</td><td class="no">No, Apple devices only</td><td>Partial</td><td>Partial</td><td>Yes, by hand</td></tr>
           <tr><th scope="row">Windows</th><td class="us yes">Yes</td><td class="no">No</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-          <tr><th scope="row">Works over any network, not just the same Wi-Fi</th><td class="us yes">Yes</td><td>Nearby devices only</td><td>Same Wi-Fi only</td><td>Yes</td><td>Yes</td></tr>
+          <tr><th scope="row">Works over any network, not just the same Wi-Fi</th><td class="us yes">Yes: direct on the same Wi-Fi, through the server anywhere else</td><td>Nearby devices only</td><td>Same Wi-Fi only</td><td>Yes</td><td>Yes</td></tr>
           <tr><th scope="row">End-to-end encrypted</th><td class="us yes">Yes, always</td><td>—</td><td>—</td><td>Optional, off by default</td><td class="no">No</td></tr>
+          <tr><th scope="row">Send files directly over Wi-Fi, no size limit</th><td class="us yes">Yes</td><td>AirDrop, Apple devices only</td><td>Yes</td><td>Through their server, size-limited</td><td>Attachments, size-limited</td></tr>
           <tr><th scope="row">Images</th><td class="us yes">Yes</td><td>Yes</td><td>—</td><td>—</td><td>Yes, as attachments</td></tr>
           <tr><th scope="row">Automatic in both directions</th><td class="us yes">Yes, after a one-time setup on Android</td><td>Yes, between Apple devices</td><td>Partial</td><td>Partial, paid add-on</td><td class="no">No</td></tr>
           <tr><th scope="row">Clipboard history with search</th><td class="us yes">Yes, on the Mac</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td>Partial, inbox search</td></tr>
@@ -267,6 +303,14 @@
     <details>
       <summary>Is it secure?</summary>
       <p>Each clip is encrypted on your device with AES-256-GCM before it's uploaded. The key is created when you pair and travels only inside the QR code, from your computer to your phone. Our server stores ciphertext it can't read, and deletes it after 24 hours.</p>
+    </details>
+    <details>
+      <summary>Does it work without internet?</summary>
+      <p>Between devices on the same Wi-Fi, yes: clips and files go directly from one device to the other. ClipSync still checks in with the server to keep your devices and license up to date, and uses it to reach devices that aren't on your network.</p>
+    </details>
+    <details>
+      <summary>How big a file can I send?</summary>
+      <p>There's no size limit. Files go straight across your local network, encrypted, and never through our server, so both devices need to be on the same Wi-Fi.</p>
     </details>
     <details>
       <summary>Which Android versions work?</summary>
